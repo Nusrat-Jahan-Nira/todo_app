@@ -118,6 +118,18 @@ class _TodoPageState extends State<TodoPage> {
        showMsg(context,'Input field must not be empty');
        return;
      }
+
+     final todo = MyTodo(
+         id: DateTime.now().millisecondsSinceEpoch,
+         name: textController.text,
+         priority: todoPriority
+     );
+
+     MyTodo.todos.add(todo);
+     textController.clear();
+     setState(() {
+       Navigator.pop(context);
+     });
   }
 }
 
