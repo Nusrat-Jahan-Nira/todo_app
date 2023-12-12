@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/enum_value.dart';
 import 'package:todo_app/my_todo.dart';
 import 'package:todo_app/todo_item.dart';
+import 'package:todo_app/todo_provider.dart';
 
 class TodoPage extends StatefulWidget {
   const TodoPage({super.key});
@@ -28,22 +30,27 @@ class _TodoPageState extends State<TodoPage> {
       appBar: AppBar(
         title: const Text('Todo App'),
       ),
-      body: MyTodo.todos.isEmpty
-          ? const Center(
+      body: Consumer<TodoProvider>(
+        builder:(context, provider, child) {
+          if(provider.todos.isEmpty) {
+            return   const Center(
               child: Text('Nothing to do!'),
-            )
-          : ListView.builder(
-              itemCount: MyTodo.todos.length,
-              itemBuilder: (context, index) {
-                final todos = MyTodo.todos[index];
-                return TodoItem(
-                    todo: todos,
-                    onChanged: (value) {
-                      setState(() {
-                        MyTodo.todos[index].completed = value;
+            );
+          }
+          else{
+            return ListView.builder(
+                itemCount: provider.todos.length,
+                itemBuilder: (context, index) {
+                  final todos = provider.todos[index];
+                  return TodoItem(
+                      todo: todos,
+                      onChanged: (value) {
+                        provider.updateTodo(value,index);
                       });
-                    });
-              }),
+                });
+          }
+        },
+      ),
     );
   }
 
@@ -125,11 +132,12 @@ class _TodoPageState extends State<TodoPage> {
          priority: todoPriority
      );
 
-     MyTodo.todos.add(todo);
+     Provider.of<TodoProvider>(context,listen: false).addTodo(todo);
+
+     // MyTodo.todos.add(todo);
      textController.clear();
-     setState(() {
-       Navigator.pop(context);
-     });
+     Navigator.pop(context);
+
   }
 }
 

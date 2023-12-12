@@ -11,7 +11,7 @@ class MyTodo{
     required this.name,
     required this.priority,
     this.completed = false });
-
-  static List<MyTodo> todos = [];
+  //
+  // static List<MyTodo> todos = [];
 
 }
