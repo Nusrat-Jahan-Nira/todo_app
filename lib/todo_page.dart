@@ -23,7 +23,6 @@ class _TodoPageState extends State<TodoPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           addTodo();
-          // _settingModalBottomSheet(context);
         },
         child: const Icon(Icons.add),
       ),
